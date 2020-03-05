@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdSearch } from 'react-icons/md';
 import { format, parseISO } from 'date-fns';
+import { Link } from 'react-router-dom';
 import pt from 'date-fns/locale/pt';
 import api from '~/services/api';
+import Loading from '~/components/loading';
 
 import {
   Container,
@@ -15,9 +17,12 @@ import {
 
 export default function Home() {
   const [characters, setCharacters] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [countCharacters, setCountCharacters] = useState([]);
 
   async function loadCharacters() {
+    setLoading(true);
+
     const response = await api.get('people');
 
     setCountCharacters(response.data.count);
@@ -36,6 +41,7 @@ export default function Home() {
       };
     });
 
+    setLoading(false);
     setCharacters(data);
   }
 
@@ -72,6 +78,7 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
+            <Loading loading={loading} />
             {characters.map((character, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
@@ -79,9 +86,11 @@ export default function Home() {
                 <td>{character.datetimeFormatted}</td>
 
                 <td className="px-4 py-1 text-right">
-                  <a href="/character/1" className="btn btn-primary">
-                    <MdSearch color="#fff" size="20" />
-                  </a>
+                  <Link to={`/character/${index + 1}`}>
+                    <a className="btn btn-primary">
+                      <MdSearch color="#fff" size="20" />
+                    </a>
+                  </Link>
                 </td>
               </tr>
             ))}

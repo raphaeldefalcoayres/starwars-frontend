@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   align-items: center;
+  table {
+    min-height: 485px;
+  }
 `;
 export const Header = styled.header`
   display: flex;

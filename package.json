@@ -26,8 +26,8 @@
     "tailwindcss": "^1.2.0"
   },
   "scripts": {
-    "tailwind:css": "postcss src/css/tailwind.css -o public/tailwind.css",
-    "tailwind:css:watch": "postcss src/css/tailwind.css -o public/tailwind.css --watch",
+    "tailwind:css": "postcss src/css/tailwind.src.css -o src/css/tailwind.css",
+    "tailwind:css:watch": "postcss src/css/tailwind.src.css -o src/css/tailwind.css --watch",
     "start": "yarn tailwind:css && react-app-rewired start",
     "build": "yarn tailwind:css && react-app-rewired build",
     "test": "react-app-rewired test",
