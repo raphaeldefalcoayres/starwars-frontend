@@ -21,6 +21,12 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [countCharacters, setCountCharacters] = useState(0);
   const [page, setPage] = useState(1);
+  const [planets, setPlanets] = useState([]);
+  const [species, setSpecies] = useState([]);
+  const [films, setFilms] = useState([]);
+  const [characterPlanet, setCharacterPlanet] = useState('');
+  const [characterSpecie, setCharacterSpecie] = useState('');
+  const [characterFilm, setCharacterFilm] = useState('');
 
   async function loadCharacters() {
     setLoading(true);
@@ -42,6 +48,13 @@ export default function Home() {
         if (character.species.length) {
           specie = await api.get(character.species);
           specie = specie.data;
+
+          if (characterSpecie !== '') {
+            console.log(specie.name, characterSpecie);
+            if (specie.name !== characterSpecie) {
+              return false;
+            }
+          }
         }
 
         let homeworld = 'not found';
@@ -49,9 +62,16 @@ export default function Home() {
         if (character.homeworld.length) {
           homeworld = await api.get(character.homeworld);
           homeworld = homeworld.data;
+
+          if (characterPlanet !== '') {
+            console.log(homeworld.name, characterPlanet);
+            if (homeworld.name !== characterPlanet) {
+              return false;
+            }
+          }
         }
 
-        const films = await Promise.all(
+        const listFilms = await Promise.all(
           character.films.map(async film => {
             const result = await api.get(film);
             return result.data;
@@ -72,20 +92,41 @@ export default function Home() {
           datetimeFormatted,
           specie_data: specie,
           homeworld_data: homeworld,
-          listFilms: films,
+          listFilms,
         };
       })
     ).then(result => {
       return result;
     });
 
+    console.log(data);
+
     setLoading(false);
     setCharacters(data);
   }
 
+  async function loadPlanets() {
+    const response = await api.get(`planets`);
+    setPlanets(response.data.results);
+  }
+  async function loadSpecies() {
+    const response = await api.get(`species`);
+    setSpecies(response.data.results);
+  }
+  async function loadFilms() {
+    const response = await api.get(`films`);
+    setFilms(response.data.results);
+  }
+
   useEffect(() => {
     loadCharacters();
-  }, [characterName, page]);
+  }, [characterName, page, characterPlanet, characterSpecie, characterFilm]);
+
+  useEffect(() => {
+    loadPlanets();
+    loadSpecies();
+    loadFilms();
+  }, []);
 
   function handleSearchByName(e) {
     setCharacterName(e.target.value);
@@ -93,6 +134,16 @@ export default function Home() {
 
   function goToPage(pageNum) {
     setPage(pageNum);
+  }
+
+  function handleFilterByPlanet(e) {
+    setCharacterPlanet(e.target.value);
+  }
+  function handleFilterBySpecie(e) {
+    setCharacterSpecie(e.target.value);
+  }
+  function handleFilterByFilm(e) {
+    setCharacterFilm(e.target.value);
   }
 
   return (
@@ -105,7 +156,7 @@ export default function Home() {
           </small>
         </h1>
         <Search className="w-2/3">
-          <div className="input-group">
+          <div className="input-group w-2/3">
             <div className="flex -mr-px">
               <span className="input-group-icon">
                 <MdSearch />
@@ -113,18 +164,42 @@ export default function Home() {
             </div>
             <input
               type="text"
-              placeholder="Search character for name"
+              placeholder="Search by name..."
               onChange={e => handleSearchByName(e)}
             />
           </div>
-          <select className="select-control" name="" id="">
-            <option value="">Homeworld</option>
+          <select
+            className="select-control"
+            onChange={e => handleFilterByPlanet(e)}
+          >
+            <option value="">Planets</option>
+            {planets.map((planet, index) => (
+              <option key={planet.name} value={planet.name}>
+                {planet.name}
+              </option>
+            ))}
           </select>
-          <select className="select-control" name="" id="">
-            <option value="">Film</option>
-          </select>
-          <select className="select-control" name="" id="">
+          <select
+            className="select-control"
+            onChange={e => handleFilterBySpecie(e)}
+          >
             <option value="">Specie</option>
+            {species.map((specie, index) => (
+              <option key={specie.nam} value={specie.name}>
+                {specie.name}
+              </option>
+            ))}
+          </select>
+          <select
+            className="select-control"
+            onChange={e => handleFilterByFilm(e)}
+          >
+            <option value="">Film</option>
+            {films.map((film, index) => (
+              <option key={film.name} value={film.name}>
+                {film.title}
+              </option>
+            ))}
           </select>
         </Search>
       </Header>
@@ -143,31 +218,33 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {characters.map((character, index) => (
-              <tr key={index}>
-                <td>{page == 1 ? index + 1 : index + page * 10}</td>
-                <td>{character.name}</td>
-                <td>{character.homeworld_data.name}</td>
-                <td>{character.specie_data.name}</td>
-                <td className="leading-3">
-                  <small>
-                    {character.listFilms
-                      ? character.listFilms.map(film => film.title).join()
-                      : ''}
-                  </small>
-                </td>
-                <td>{character.datetimeFormatted}</td>
+            {characters
+              .filter(item => item !== false)
+              .map((character, index) => (
+                <tr key={index}>
+                  <td>{index + 1 + (page - 1) * 10}</td>
+                  <td>{character.name}</td>
+                  <td>{character.homeworld_data.name}</td>
+                  <td>{character.specie_data.name}</td>
+                  <td className="leading-3">
+                    <small>
+                      {character.listFilms
+                        ? character.listFilms.map(film => film.title).join()
+                        : ''}
+                    </small>
+                  </td>
+                  <td>{character.datetimeFormatted}</td>
 
-                <td className="px-4 py-1 text-right">
-                  <Link
-                    className="btn btn-primary justify-end"
-                    to={`/character/${index + 1}`}
-                  >
-                    <MdSearch color="#fff" size="20" />
-                  </Link>
-                </td>
-              </tr>
-            ))}
+                  <td className="px-4 py-1 text-right">
+                    <Link
+                      className="btn btn-primary justify-end"
+                      to={`/character/${index + 1}`}
+                    >
+                      <MdSearch color="#fff" size="20" />
+                    </Link>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </CharacterList>
       </Card>
@@ -185,7 +262,9 @@ export default function Home() {
           <li>
             <button
               type="button"
-              onClick={() => goToPage(page < countCharacters ? page + 1 : page)}
+              onClick={() =>
+                goToPage(page < countCharacters / 10 ? page + 1 : page)
+              }
             >
               Next
             </button>
