@@ -1,3 +1,75 @@
 @tailwind base;
+
+h1 {
+  @apply text-2xl mb-3 font-semibold;
+}
+h2 {
+  @apply text-xl mb-3 font-semibold;
+}
+h3 {
+  @apply text-lg mb-3 font-semibold;
+}
+
 @tailwind components;
 @tailwind utilities;
+
+.card {
+  @apply rounded overflow-hidden shadow-lg p-3;
+}
+
+.input-control {
+  @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight;
+}
+
+.table {
+  @apply w-full;
+}
+
+.table tr td > *,
+.table tr th > * {
+  vertical-align: middle;
+}
+
+.table-bordered tr th,
+.table-bordered tr td {
+  @apply border;
+}
+
+.table-row-bordered tbody tr {
+  @apply border-solid border-gray-300;
+  border-right: none;
+  border-bottom: none;
+  border-left: none;
+  border-width: 1px;
+}
+
+.table-stripped tr:nth-child(even) {
+  @apply bg-gray-100;
+}
+.table-hover tr:hover {
+  @apply bg-gray-200;
+}
+
+.btn {
+  @apply inline-block text-white font-bold py-2 px-4 rounded;
+}
+
+.btn-primary {
+  @apply bg-blue-500;
+}
+
+.btn-primary:hover {
+  @apply bg-blue-700;
+}
+
+.input-group {
+  @apply flex flex-wrap items-stretch w-full mb-4 relative;
+}
+
+.input-group input {
+  @apply flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 border-gray-300 rounded rounded-l-none px-3 relative;
+}
+
+.input-group-icon {
+  @apply flex items-center leading-normal bg-gray-100 rounded rounded-r-none border border-gray-300 px-3 whitespace-no-wrap text-gray-600 text-sm;
+}

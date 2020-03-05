@@ -26,6 +26,7 @@
   },
   "scripts": {
     "tailwind:css": "postcss src/css/tailwind.css -o public/tailwind.css",
+    "tailwind:css:watch": "postcss src/css/tailwind.css -o public/tailwind.css --watch",
     "start": "yarn tailwind:css && react-app-rewired start",
     "build": "yarn tailwind:css && react-app-rewired build",
     "test": "react-app-rewired test",
