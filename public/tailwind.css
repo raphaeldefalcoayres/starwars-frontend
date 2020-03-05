@@ -11047,6 +11047,46 @@ h3 {
   font-size: 0.875rem;
 }
 
+.paginate ul {
+  display: flex;
+  border-width: 1px;
+  border-color: #edf2f7;
+  border-radius: 0.25rem;
+  list-style: none;
+}
+
+.paginate a {
+  display: block;
+  color: #4299e1;
+  border-color: #edf2f7;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-width: 1px;
+  border-radius: 0.25rem;
+}
+
+.paginate a.active {
+  display: block;
+  color: #fff;
+  background-color: #4299e1;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.paginate a:hover {
+  display: block;
+  color: #fff;
+  background-color: #4299e1;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
 @media (min-width: 640px) {
   .sm\:sr-only {
     position: absolute;

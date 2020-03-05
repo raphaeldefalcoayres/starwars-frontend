@@ -73,3 +73,20 @@ h3 {
 .input-group-icon {
   @apply flex items-center leading-normal bg-gray-100 rounded rounded-r-none border border-gray-300 px-3 whitespace-no-wrap text-gray-600 text-sm;
 }
+
+.paginate ul {
+  @apply flex border border-gray-200 rounded;
+  list-style: none;
+}
+
+.paginate a {
+  @apply block text-blue-500 border-gray-200 px-3 py-2 border rounded;
+}
+
+.paginate a.active {
+  @apply block text-white bg-blue-500 px-3 py-2;
+}
+
+.paginate a:hover {
+  @apply block text-white bg-blue-500 px-3 py-2;
+}
