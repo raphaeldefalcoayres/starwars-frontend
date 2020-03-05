@@ -7,14 +7,21 @@ import api from '~/services/api';
 export default function Character({ match: { params } }) {
   const [character, setCharacter] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [films, setFilms] = useState([]);
   async function loadCharacter() {
     setLoading(true);
 
     const response = await api.get(`people/${params.id}`);
+    let specie = '';
 
-    const specie = await api.get(response.data.species);
-    const homeworld = await api.get(response.data.homeworld);
+    if (response.data.species) {
+      specie = await api.get(response.data.species);
+    }
+
+    let homeworld = '';
+
+    if (response.data.homeworld) {
+      homeworld = await api.get(response.data.homeworld);
+    }
 
     const films = await Promise.all(
       response.data.films.map(async film => {
@@ -31,8 +38,6 @@ export default function Character({ match: { params } }) {
       homeworld: homeworld.data,
       listFilms: films,
     };
-
-    console.log(data);
 
     setLoading(false);
     setCharacter(data);
@@ -63,10 +68,6 @@ export default function Character({ match: { params } }) {
           </li>
           <li>
             <strong>Homeworld:</strong>{' '}
-            <span>{character.homeworld ? character.homeworld.name : ''}</span>
-          </li>
-          <li>
-            <strong>Films:</strong>{' '}
             <span>{character.homeworld ? character.homeworld.name : ''}</span>
           </li>
           <li>

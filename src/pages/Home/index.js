@@ -19,7 +19,8 @@ export default function Home() {
   const [characters, setCharacters] = useState([]);
   const [characterName, setCharacterName] = useState('');
   const [loading, setLoading] = useState(false);
-  const [countCharacters, setCountCharacters] = useState([]);
+  const [countCharacters, setCountCharacters] = useState(0);
+  const [page, setPage] = useState(1);
 
   async function loadCharacters() {
     setLoading(true);
@@ -27,17 +28,28 @@ export default function Home() {
     let search = '';
 
     if (characterName !== '') {
-      search = `?search=${characterName}`;
+      search = `&search=${characterName}`;
     }
 
-    const response = await api.get(`people/${search}`);
+    const response = await api.get(`people/?page=${page}${search}`);
 
     setCountCharacters(response.data.count);
 
     const data = await Promise.all(
       response.data.results.map(async character => {
-        const specie = await api.get(character.species);
-        const homeworld = await api.get(character.homeworld);
+        let specie = 'not found';
+
+        if (character.species.length) {
+          specie = await api.get(character.species);
+          specie = specie.data;
+        }
+
+        let homeworld = 'not found';
+
+        if (character.homeworld.length) {
+          homeworld = await api.get(character.homeworld);
+          homeworld = homeworld.data;
+        }
 
         const films = await Promise.all(
           character.films.map(async film => {
@@ -58,8 +70,8 @@ export default function Home() {
         return {
           ...character,
           datetimeFormatted,
-          specie_data: specie.data,
-          homeworld_data: homeworld.data,
+          specie_data: specie,
+          homeworld_data: homeworld,
           listFilms: films,
         };
       })
@@ -67,29 +79,32 @@ export default function Home() {
       return result;
     });
 
-    console.log(data);
-
     setLoading(false);
     setCharacters(data);
   }
 
   useEffect(() => {
     loadCharacters();
-  }, [characterName]);
+  }, [characterName, page]);
 
   function handleSearchByName(e) {
-    console.log(e.target.value);
     setCharacterName(e.target.value);
+  }
+
+  function goToPage(pageNum) {
+    setPage(pageNum);
   }
 
   return (
     <Container className="container h-full mx-auto py-5">
       <Header className="w-full">
         <h1>
-          Startwars character list - showing {characters.length || 0} of{' '}
-          {countCharacters || 0}{' '}
+          Startwars characters -{' '}
+          <small>
+            page: {page} total: {countCharacters || 0}
+          </small>
         </h1>
-        <Search className="w-1/3">
+        <Search className="w-2/3">
           <div className="input-group">
             <div className="flex -mr-px">
               <span className="input-group-icon">
@@ -102,6 +117,15 @@ export default function Home() {
               onChange={e => handleSearchByName(e)}
             />
           </div>
+          <select className="select-control" name="" id="">
+            <option value="">Homeworld</option>
+          </select>
+          <select className="select-control" name="" id="">
+            <option value="">Film</option>
+          </select>
+          <select className="select-control" name="" id="">
+            <option value="">Specie</option>
+          </select>
         </Search>
       </Header>
       <Card className="card m-auto w-full relative">
@@ -121,7 +145,7 @@ export default function Home() {
           <tbody>
             {characters.map((character, index) => (
               <tr key={index}>
-                <td>{index + 1}</td>
+                <td>{page == 1 ? index + 1 : index + page * 10}</td>
                 <td>{character.name}</td>
                 <td>{character.homeworld_data.name}</td>
                 <td>{character.specie_data.name}</td>
@@ -150,21 +174,21 @@ export default function Home() {
       <Paginate className="paginate">
         <ul>
           <li>
-            <a href="#">Previous</a>
+            <button
+              type="button"
+              onClick={() => goToPage(page > 1 ? page - 1 : page)}
+            >
+              Previous
+            </button>
           </li>
+          <li className="active">{page}</li>
           <li>
-            <a href="#">1</a>
-          </li>
-          <li>
-            <a href="#">2</a>
-          </li>
-          <li>
-            <a className="active" href="#">
-              3
-            </a>
-          </li>
-          <li>
-            <a href="#">Next</a>
+            <button
+              type="button"
+              onClick={() => goToPage(page < countCharacters ? page + 1 : page)}
+            >
+              Next
+            </button>
           </li>
         </ul>
       </Paginate>

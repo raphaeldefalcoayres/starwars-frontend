@@ -67,11 +67,11 @@ h3 {
 }
 
 .input-group {
-  @apply flex flex-wrap items-stretch w-full mb-4 relative;
+  @apply flex flex-wrap items-stretch w-full relative shadow;
 }
 
 .input-group input {
-  @apply flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 border-gray-300 rounded rounded-l-none px-3 relative;
+  @apply flex-shrink  flex-grow flex-auto leading-normal w-px flex-1 border h-10 border-gray-300 rounded rounded-l-none px-3 relative;
 }
 
 .input-group-icon {
@@ -83,14 +83,18 @@ h3 {
   list-style: none;
 }
 
-.paginate a {
+.paginate button {
   @apply block text-blue-500 border-gray-200 px-3 py-2 border rounded;
 }
 
-.paginate a.active {
+.paginate .active {
   @apply block text-white bg-blue-500 px-3 py-2;
 }
 
-.paginate a:hover {
+.paginate button:hover {
   @apply block text-white bg-blue-500 px-3 py-2;
+}
+
+.select-control {
+  @apply block w-full bg-white border border-gray-300 px-4 py-2 pr-8 rounded shadow text-gray-600 leading-tight;
 }

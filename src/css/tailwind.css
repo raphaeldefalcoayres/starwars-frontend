@@ -11014,8 +11014,8 @@ h3 {
   flex-wrap: wrap;
   align-items: stretch;
   width: 100%;
-  margin-bottom: 1rem;
   position: relative;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .input-group input {
@@ -11061,7 +11061,7 @@ h3 {
   list-style: none;
 }
 
-.paginate a {
+.paginate button {
   display: block;
   color: #4299e1;
   border-color: #edf2f7;
@@ -11073,7 +11073,7 @@ h3 {
   border-radius: 0.25rem;
 }
 
-.paginate a.active {
+.paginate .active {
   display: block;
   color: #fff;
   background-color: #4299e1;
@@ -11083,7 +11083,7 @@ h3 {
   padding-bottom: 0.5rem;
 }
 
-.paginate a:hover {
+.paginate button:hover {
   display: block;
   color: #fff;
   background-color: #4299e1;
@@ -11091,6 +11091,23 @@ h3 {
   padding-right: 0.75rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+.select-control {
+  display: block;
+  width: 100%;
+  background-color: #fff;
+  border-width: 1px;
+  border-color: #e2e8f0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-right: 2rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  color: #718096;
+  line-height: 1.25;
 }
 
 @media (min-width: 640px) {

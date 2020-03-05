@@ -8,7 +8,14 @@ export const Header = styled.header`
   align-items: center;
   justify-content: space-between;
 `;
-export const Search = styled.div``;
+export const Search = styled.div`
+  display: flex;
+  position: relative;
+  > * {
+    margin-left: 10px;
+  }
+  font-size: 13px;
+`;
 export const CharacterList = styled.table`
   /* min-height: 485px; */
   font-size: 13px;
