@@ -10962,6 +10962,12 @@ h3 {
   vertical-align: middle;
 }
 
+.table tr td > * {
+  display: inline-block;
+  text-align: center;
+  justify-content: center;
+}
+
 .table-bordered tr th,
 .table-bordered tr td {
   border-width: 1px;
@@ -10980,7 +10986,7 @@ h3 {
   background-color: #f7fafc;
 }
 
-.table-hover tr:hover {
+.table-hover tbody tr:hover {
   background-color: #edf2f7;
 }
 

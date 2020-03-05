@@ -30,6 +30,10 @@ h3 {
   vertical-align: middle;
 }
 
+.table tr td > * {
+  @apply inline-block text-center justify-center;
+}
+
 .table-bordered tr th,
 .table-bordered tr td {
   @apply border;
@@ -46,7 +50,7 @@ h3 {
 .table-stripped tr:nth-child(even) {
   @apply bg-gray-100;
 }
-.table-hover tr:hover {
+.table-hover tbody tr:hover {
   @apply bg-gray-200;
 }
 

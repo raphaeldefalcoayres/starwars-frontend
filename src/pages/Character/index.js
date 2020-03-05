@@ -67,6 +67,10 @@ export default function Character({ match: { params } }) {
           </li>
           <li>
             <strong>Films:</strong>{' '}
+            <span>{character.homeworld ? character.homeworld.name : ''}</span>
+          </li>
+          <li>
+            <strong>Films:</strong>{' '}
             <span>
               {character.listFilms
                 ? character.listFilms.map(film => film.title).join()
