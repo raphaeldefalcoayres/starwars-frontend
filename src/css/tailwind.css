@@ -11001,6 +11001,14 @@ h3 {
   border-radius: 0.25rem;
 }
 
+.btn-sm {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: 0.25rem;
+}
+
 .btn-primary {
   background-color: #4299e1;
 }
@@ -11107,6 +11115,24 @@ h3 {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   color: #718096;
   line-height: 1.25;
+}
+
+.badge {
+  display: flex;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-right: 0.75rem;
+}
+
+.badge-primary {
+  background-color: #4299e1;
+  color: #fff;
 }
 
 @media (min-width: 640px) {

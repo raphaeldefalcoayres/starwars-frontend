@@ -1,7 +1,6 @@
 import api from '~/services/api';
 
 export const getItemsList = (url, items, resolve, reject) => {
-  console.log('getItemsList', url, items, resolve, reject);
   api
     .get(url)
     .then(response => {

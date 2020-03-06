@@ -44,54 +44,24 @@ export default function Home() {
 
     const data = await Promise.all(
       response.data.results.map(async character => {
-        let specie = 'not found';
-
-        if (character.species.length) {
-          specie = await api.get(character.species);
-          specie = specie.data;
-
-          if (characterSpecie !== '') {
-            if (specie.name !== characterSpecie) {
-              return false;
-            }
-          }
-        }
-
-        let homeworld = 'not found';
-
-        if (character.homeworld.length) {
-          homeworld = await api.get(character.homeworld);
-          homeworld = homeworld.data;
-
-          if (characterPlanet !== '') {
-            if (homeworld.name !== characterPlanet) {
-              return false;
-            }
-          }
-        }
-
-        const listFilms = await Promise.all(
-          character.films.map(async film => {
-            const result = await api.get(film);
-            return result.data;
-          })
-        ).then(result => {
-          return result;
-        });
-
-        const datetimeFormatted = format(
+        const createdFormatted = format(
           parseISO(character.created),
-          "d 'de' MMMM, 'às' HH'h'",
+          'dd/MM/yyyy',
+          {
+            locale: pt,
+          }
+        );
+        const editedFormatted = format(
+          parseISO(character.edited),
+          'dd/MM/yyyy',
           {
             locale: pt,
           }
         );
         return {
           ...character,
-          datetimeFormatted,
-          specie_data: specie,
-          homeworld_data: homeworld,
-          listFilms,
+          createdFormatted,
+          editedFormatted,
         };
       })
     ).then(result => {
@@ -100,25 +70,41 @@ export default function Home() {
 
     setLoading(false);
     setCharacters(data);
+    console.log(data);
   }
 
   async function loadPlanets() {
-    new Promise((resolve, reject) => {
-      Utils.getItemsList('planets', [], resolve, reject);
-    }).then(response => {
-      setPlanets(response);
-    });
+    if (!localStorage.getItem('planets')) {
+      new Promise((resolve, reject) => {
+        Utils.getItemsList('planets', [], resolve, reject);
+      }).then(response => {
+        setPlanets(response);
+        localStorage.setItem('planets', JSON.stringify(response));
+      });
+    } else {
+      setPlanets(JSON.parse(localStorage.getItem('planets')));
+    }
   }
   async function loadSpecies() {
-    new Promise((resolve, reject) => {
-      Utils.getItemsList('species', [], resolve, reject);
-    }).then(response => {
-      setSpecies(response);
-    });
+    if (!localStorage.getItem('planets')) {
+      new Promise((resolve, reject) => {
+        Utils.getItemsList('species', [], resolve, reject);
+      }).then(response => {
+        setSpecies(response);
+        localStorage.setItem('species', JSON.stringify(response));
+      });
+    } else {
+      setSpecies(JSON.parse(localStorage.getItem('species')));
+    }
   }
   async function loadFilms() {
-    const response = await api.get(`films`);
-    setFilms(response.data.results);
+    if (!localStorage.getItem('films')) {
+      const response = await api.get(`films`);
+      setFilms(response.data.results);
+      localStorage.setItem('films', JSON.stringify(response.data.results));
+    } else {
+      setFilms(JSON.parse(localStorage.getItem('films')));
+    }
   }
 
   useEffect(() => {
@@ -177,7 +163,7 @@ export default function Home() {
           >
             <option value="">Planets</option>
             {planets.map((planet, index) => (
-              <option key={planet.name} value={index + 1}>
+              <option key={planet.created} value={index + 1}>
                 {planet.name}
               </option>
             ))}
@@ -188,7 +174,7 @@ export default function Home() {
           >
             <option value="">Specie</option>
             {species.map((specie, index) => (
-              <option key={specie.nam} value={index + 1}>
+              <option key={specie.created} value={index + 1}>
                 {specie.name}
               </option>
             ))}
@@ -199,7 +185,7 @@ export default function Home() {
           >
             <option value="">Film</option>
             {films.map((film, index) => (
-              <option key={film.name} value={index + 1}>
+              <option key={film.created} value={index + 1}>
                 {film.title}
               </option>
             ))}
@@ -212,11 +198,19 @@ export default function Home() {
           <thead>
             <tr>
               <th className="px-4 py-2">#</th>
-              <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Homeworld</th>
-              <th className="px-4 py-2">Specie</th>
-              <th className="px-4 w-1/3 py-2">Films</th>
+              <th className="px-4 py-2 w-2/3">Name</th>
+              <th className="px-4 py-2">Height</th>
+              <th className="px-4 py-2">Mass</th>
+              <th className="px-4 py-2">Hair color</th>
+              <th className="px-4 py-2">Skin color</th>
+              <th className="px-4 py-2">Eye color</th>
+              <th className="px-4 py-2">Gender</th>
+              <th className="px-4 py-2">Birth year</th>
+              <th className="px-4 py-2">Total Films</th>
+              <th className="px-4 py-2">Total Starships</th>
+              <th className="px-4 py-2">Total veicles</th>
               <th className="px-4 py-2">Created</th>
+              <th className="px-4 py-2">Edited</th>
               <th className="px-4 py-2 w-16" />
             </tr>
           </thead>
@@ -227,20 +221,34 @@ export default function Home() {
                 <tr key={index}>
                   <td>{index + 1 + (page - 1) * 10}</td>
                   <td>{character.name}</td>
-                  <td>{character.homeworld_data.name}</td>
-                  <td>{character.specie_data.name}</td>
+                  <td>{character.height}</td>
+                  <td>{character.mass}</td>
+                  <td>{character.hair_color}</td>
+                  <td>{character.skin_color}</td>
+                  <td>{character.eye_color}</td>
+                  <td>{character.gender}</td>
+                  <td>{character.birth_year}</td>
                   <td className="leading-3">
-                    <small>
-                      {character.listFilms
-                        ? character.listFilms.map(film => film.title).join()
-                        : ''}
+                    <small className="badge badge-primary">
+                      {character.films.length}
                     </small>
                   </td>
-                  <td>{character.datetimeFormatted}</td>
+                  <td className="leading-3">
+                    <small className="badge badge-primary">
+                      {character.vehicles.length}
+                    </small>
+                  </td>
+                  <td className="leading-3">
+                    <small className="badge badge-primary">
+                      {character.starships.length}
+                    </small>
+                  </td>
+                  <td>{character.createdFormatted}</td>
+                  <td>{character.editedFormatted}</td>
 
                   <td className="px-4 py-1 text-right">
                     <Link
-                      className="btn btn-primary justify-end"
+                      className="btn btn-sm btn-primary justify-end"
                       to={`/character/${index + 1}`}
                     >
                       <MdSearch color="#fff" size="20" />

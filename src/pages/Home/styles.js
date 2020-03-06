@@ -17,11 +17,10 @@ export const Search = styled.div`
   font-size: 13px;
 `;
 export const CharacterList = styled.table`
-  /* min-height: 485px; */
   font-size: 13px;
 `;
 export const Card = styled.div`
-  min-height: 500px;
+  min-height: 440px;
 `;
 export const Paginate = styled.div`
   display: flex;
