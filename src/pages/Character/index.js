@@ -45,7 +45,7 @@ export default function Character({ match: { params } }) {
 
   useEffect(() => {
     loadCharacter();
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <Container className="container h-full mx-auto py-5">

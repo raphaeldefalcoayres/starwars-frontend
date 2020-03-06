@@ -4,6 +4,7 @@ import { format, parseISO } from 'date-fns';
 import { Link } from 'react-router-dom';
 import pt from 'date-fns/locale/pt';
 import api from '~/services/api';
+import * as Utils from '~/utils/getItemsList';
 import Loading from '~/components/loading';
 
 import {
@@ -50,7 +51,6 @@ export default function Home() {
           specie = specie.data;
 
           if (characterSpecie !== '') {
-            console.log(specie.name, characterSpecie);
             if (specie.name !== characterSpecie) {
               return false;
             }
@@ -64,7 +64,6 @@ export default function Home() {
           homeworld = homeworld.data;
 
           if (characterPlanet !== '') {
-            console.log(homeworld.name, characterPlanet);
             if (homeworld.name !== characterPlanet) {
               return false;
             }
@@ -99,19 +98,23 @@ export default function Home() {
       return result;
     });
 
-    console.log(data);
-
     setLoading(false);
     setCharacters(data);
   }
 
   async function loadPlanets() {
-    const response = await api.get(`planets`);
-    setPlanets(response.data.results);
+    new Promise((resolve, reject) => {
+      Utils.getItemsList('planets', [], resolve, reject);
+    }).then(response => {
+      setPlanets(response);
+    });
   }
   async function loadSpecies() {
-    const response = await api.get(`species`);
-    setSpecies(response.data.results);
+    new Promise((resolve, reject) => {
+      Utils.getItemsList('species', [], resolve, reject);
+    }).then(response => {
+      setSpecies(response);
+    });
   }
   async function loadFilms() {
     const response = await api.get(`films`);
@@ -120,7 +123,7 @@ export default function Home() {
 
   useEffect(() => {
     loadCharacters();
-  }, [characterName, page, characterPlanet, characterSpecie, characterFilm]);
+  }, [characterName, page, characterPlanet, characterSpecie, characterFilm]); // eslint-disable-line
 
   useEffect(() => {
     loadPlanets();
@@ -174,7 +177,7 @@ export default function Home() {
           >
             <option value="">Planets</option>
             {planets.map((planet, index) => (
-              <option key={planet.name} value={planet.name}>
+              <option key={planet.name} value={index + 1}>
                 {planet.name}
               </option>
             ))}
@@ -185,7 +188,7 @@ export default function Home() {
           >
             <option value="">Specie</option>
             {species.map((specie, index) => (
-              <option key={specie.nam} value={specie.name}>
+              <option key={specie.nam} value={index + 1}>
                 {specie.name}
               </option>
             ))}
@@ -196,7 +199,7 @@ export default function Home() {
           >
             <option value="">Film</option>
             {films.map((film, index) => (
-              <option key={film.name} value={film.name}>
+              <option key={film.name} value={index + 1}>
                 {film.title}
               </option>
             ))}
@@ -214,7 +217,7 @@ export default function Home() {
               <th className="px-4 py-2">Specie</th>
               <th className="px-4 w-1/3 py-2">Films</th>
               <th className="px-4 py-2">Created</th>
-              <th className="px-4 py-2 w-16"></th>
+              <th className="px-4 py-2 w-16" />
             </tr>
           </thead>
           <tbody>
