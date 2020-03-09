@@ -10991,7 +10991,7 @@ h3 {
 }
 
 .btn {
-  display: inline-block;
+  display: inline-flex;
   color: #fff;
   font-weight: 700;
   padding-top: 0.5rem;
@@ -10999,6 +10999,11 @@ h3 {
   padding-left: 1rem;
   padding-right: 1rem;
   border-radius: 0.25rem;
+  align-items: center;
+}
+
+.btn > * {
+  display: inline-flex;
 }
 
 .btn-sm {
@@ -11127,7 +11132,6 @@ h3 {
   padding-bottom: 0.25rem;
   font-size: 0.75rem;
   font-weight: 700;
-  margin-right: 0.75rem;
 }
 
 .badge-primary {

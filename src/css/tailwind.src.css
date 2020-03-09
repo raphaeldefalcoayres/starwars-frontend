@@ -55,7 +55,11 @@ h3 {
 }
 
 .btn {
-  @apply inline-block text-white font-bold py-2 px-4 rounded;
+  @apply inline-flex text-white font-bold py-2 px-4 rounded items-center;
+}
+
+.btn > * {
+  @apply inline-flex;
 }
 
 .btn-sm {
@@ -104,7 +108,7 @@ h3 {
 }
 
 .badge {
-  @apply flex rounded-full uppercase px-2 py-1 text-xs font-bold mr-3;
+  @apply flex rounded-full uppercase px-2 py-1 text-xs font-bold;
 }
 
 .badge-primary {

@@ -117,8 +117,23 @@ export default function Home() {
     loadFilms();
   }, []);
 
+  const delay = (() => {
+    let timer = 0;
+    return (callback, ms, that) => {
+      clearTimeout(timer);
+      timer = setTimeout(callback.bind(that), ms);
+    };
+  })();
+
   function handleSearchByName(e) {
-    setCharacterName(e.target.value);
+    const target = e.target.value;
+    delay(
+      () => {
+        setCharacterName(target);
+      },
+      1000,
+      this
+    );
   }
 
   function goToPage(pageNum) {
@@ -246,7 +261,7 @@ export default function Home() {
                   <td>{character.createdFormatted}</td>
                   <td>{character.editedFormatted}</td>
 
-                  <td className="px-4 py-1 text-right">
+                  <td className="pl-4 py-1 text-right">
                     <Link
                       className="btn btn-sm btn-primary justify-end"
                       to={`/character/${index + 1}`}

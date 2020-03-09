@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
+import { Link } from 'react-router-dom';
+import { MdChevronLeft } from 'react-icons/md';
 import { Container, Card } from './styles';
 import Loading from '~/components/loading';
 import api from '~/services/api';
@@ -79,6 +80,9 @@ export default function Character({ match: { params } }) {
             </span>
           </li>
         </ul>
+        <Link to="/" className="btn btn-primary btn-sm mt-3">
+          <MdChevronLeft size="16" color="#fff" className="mr-1" /> Voltar
+        </Link>
       </Card>
     </Container>
   );
