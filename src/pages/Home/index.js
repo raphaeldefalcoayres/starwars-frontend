@@ -18,6 +18,7 @@ import {
 
 export default function Home() {
   const [characters, setCharacters] = useState([]);
+  const [charactersPagination, setCharactersPagination] = useState([]);
   const [characterName, setCharacterName] = useState('');
   const [loading, setLoading] = useState(false);
   const [countCharacters, setCountCharacters] = useState(0);
@@ -28,6 +29,22 @@ export default function Home() {
   const [characterPlanet, setCharacterPlanet] = useState('');
   const [characterSpecie, setCharacterSpecie] = useState('');
   const [characterFilm, setCharacterFilm] = useState('');
+
+  async function loadCharactersCache() {
+    if (!localStorage.getItem('people')) {
+      new Promise((resolve, reject) => {
+        Utils.getItemsListPaginate('people/', [], resolve, reject);
+      }).then(response => {
+        setCharactersPagination(response);
+        setCountCharacters(response.total);
+        localStorage.setItem('people', JSON.stringify(response.data));
+        localStorage.setItem('total', JSON.stringify(response.total));
+      });
+    } else {
+      setCharactersPagination(JSON.parse(localStorage.getItem('people')));
+      setCountCharacters(JSON.parse(localStorage.getItem('total')));
+    }
+  }
 
   async function loadCharacters() {
     setLoading(true);
@@ -44,6 +61,25 @@ export default function Home() {
 
     const data = await Promise.all(
       response.data.results.map(async character => {
+        let planet_id = '';
+        let specie_ids = [];
+
+        planet_id = character.homeworld.replace(/[^0-9\\]+/g, '');
+
+        if (characterPlanet !== '' && characterPlanet !== planet_id) {
+          return false;
+        }
+
+        if (character.species) {
+          specie_ids = character.species.map(specie =>
+            specie.replace(/[^0-9\\]+/g, '')
+          );
+        }
+
+        if (characterSpecie !== '' && specie_ids.includes(characterSpecie)) {
+          return false;
+        }
+
         const createdFormatted = format(
           parseISO(character.created),
           'dd/MM/yyyy',
@@ -62,10 +98,12 @@ export default function Home() {
           ...character,
           createdFormatted,
           editedFormatted,
+          planet_id,
+          specie_ids,
         };
       })
     ).then(result => {
-      return result;
+      return result.filter(character => character !== false);
     });
 
     setLoading(false);
@@ -107,15 +145,65 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    loadCharacters();
-  }, [characterName, page, characterPlanet, characterSpecie, characterFilm]); // eslint-disable-line
+  function mountCharacters() {
+    const data = charactersPagination[page - 1].map(character => {
+      let planet_id = '';
+      let specie_ids = [];
+
+      planet_id = character.homeworld.replace(/[^0-9\\]+/g, '');
+
+      if (characterPlanet !== '' && characterPlanet !== planet_id) {
+        return false;
+      }
+
+      if (character.species) {
+        specie_ids = character.species.map(specie =>
+          specie.replace(/[^0-9\\]+/g, '')
+        );
+      }
+
+      if (characterSpecie !== '' && specie_ids.includes(characterSpecie)) {
+        return false;
+      }
+
+      const createdFormatted = format(
+        parseISO(character.created),
+        'dd/MM/yyyy',
+        {
+          locale: pt,
+        }
+      );
+      const editedFormatted = format(parseISO(character.edited), 'dd/MM/yyyy', {
+        locale: pt,
+      });
+      return {
+        ...character,
+        createdFormatted,
+        editedFormatted,
+        planet_id,
+        specie_ids,
+      };
+    });
+
+    setLoading(false);
+    setCharacters(data);
+  }
 
   useEffect(() => {
     loadPlanets();
     loadSpecies();
     loadFilms();
+    if (!localStorage.getItem('people')) {
+      loadCharacters();
+    }
+    loadCharactersCache();
   }, []);
+
+  useEffect(() => {
+    if (charactersPagination[page] !== undefined) {
+      mountCharacters();
+    }
+  }, [charactersPagination, page]);
 
   const delay = (() => {
     let timer = 0;
@@ -178,7 +266,10 @@ export default function Home() {
           >
             <option value="">Planets</option>
             {planets.map((planet, index) => (
-              <option key={planet.created} value={index + 1}>
+              <option
+                key={planet.created}
+                value={planet.url.replace(/[^0-9\\]+/g, '')}
+              >
                 {planet.name}
               </option>
             ))}
@@ -189,7 +280,10 @@ export default function Home() {
           >
             <option value="">Specie</option>
             {species.map((specie, index) => (
-              <option key={specie.created} value={index + 1}>
+              <option
+                key={specie.created}
+                value={specie.url.replace(/[^0-9\\]+/g, '')}
+              >
                 {specie.name}
               </option>
             ))}
@@ -200,7 +294,10 @@ export default function Home() {
           >
             <option value="">Film</option>
             {films.map((film, index) => (
-              <option key={film.created} value={index + 1}>
+              <option
+                key={film.created}
+                value={film.url.replace(/[^0-9\\]+/g, '')}
+              >
                 {film.title}
               </option>
             ))}
