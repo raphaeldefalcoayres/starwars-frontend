@@ -7,14 +7,8 @@ import api from '~/services/api';
 import * as Utils from '~/utils/getItemsList';
 import Loading from '~/components/loading';
 
-import {
-  Container,
-  Header,
-  Search,
-  CharacterList,
-  Card,
-  Paginate,
-} from './styles';
+import { Container, CharacterList, Card, Paginate } from './styles';
+import Header from '~/components/Header';
 
 export default function Home() {
   const [characters, setCharacters] = useState([]);
@@ -23,9 +17,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [countCharacters, setCountCharacters] = useState(0);
   const [page, setPage] = useState(1);
-  const [planets, setPlanets] = useState([]);
-  const [species, setSpecies] = useState([]);
-  const [films, setFilms] = useState([]);
   const [characterPlanet, setCharacterPlanet] = useState('');
   const [characterSpecie, setCharacterSpecie] = useState('');
   const [characterFilm, setCharacterFilm] = useState('');
@@ -111,40 +102,6 @@ export default function Home() {
     console.log(data);
   }
 
-  async function loadPlanets() {
-    if (!localStorage.getItem('planets')) {
-      new Promise((resolve, reject) => {
-        Utils.getItemsList('planets', [], resolve, reject);
-      }).then(response => {
-        setPlanets(response);
-        localStorage.setItem('planets', JSON.stringify(response));
-      });
-    } else {
-      setPlanets(JSON.parse(localStorage.getItem('planets')));
-    }
-  }
-  async function loadSpecies() {
-    if (!localStorage.getItem('planets')) {
-      new Promise((resolve, reject) => {
-        Utils.getItemsList('species', [], resolve, reject);
-      }).then(response => {
-        setSpecies(response);
-        localStorage.setItem('species', JSON.stringify(response));
-      });
-    } else {
-      setSpecies(JSON.parse(localStorage.getItem('species')));
-    }
-  }
-  async function loadFilms() {
-    if (!localStorage.getItem('films')) {
-      const response = await api.get(`films`);
-      setFilms(response.data.results);
-      localStorage.setItem('films', JSON.stringify(response.data.results));
-    } else {
-      setFilms(JSON.parse(localStorage.getItem('films')));
-    }
-  }
-
   function mountCharacters() {
     const data = charactersPagination[page - 1].map(character => {
       let planet_id = '';
@@ -190,9 +147,6 @@ export default function Home() {
   }
 
   useEffect(() => {
-    loadPlanets();
-    loadSpecies();
-    loadFilms();
     if (!localStorage.getItem('people')) {
       loadCharacters();
     }
@@ -239,161 +193,156 @@ export default function Home() {
   }
 
   return (
-    <Container className="container h-full mx-auto py-5">
-      <Header className="w-full">
-        <h1>
-          Startwars characters -{' '}
-          <small>
-            page: {page} total: {countCharacters || 0}
-          </small>
-        </h1>
-        <Search className="w-2/3">
-          <div className="input-group w-2/3">
-            <div className="flex -mr-px">
-              <span className="input-group-icon">
-                <MdSearch />
-              </span>
+    <>
+      <Header
+        handleSearchByName={handleSearchByName}
+        handleFilterByPlanet={handleFilterByPlanet}
+        handleFilterBySpecie={handleFilterBySpecie}
+        handleFilterByFilm={handleFilterByFilm}
+      />
+      <Container className="px-3 h-full py-3">
+        <Card className="card m-auto w-full relative">
+          <Loading loading={loading} />
+          <CharacterList className="w-full">
+            <div className="list-head flex flex-row">
+              <div className="py-2 w-16 content-center text-center self-center border">
+                #
+              </div>
+              <div className="py-2 w-64 content-center text-center self-center border">
+                name
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Height
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Mass
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Hair color
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Skin color
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Eye color
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Gender
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Birth year
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Total Films
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Total Starships
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Total veicles
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Created
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Edited
+              </div>
+              <div className="py-2 w-32 content-center text-center self-center border">
+                Actions
+              </div>
             </div>
-            <input
-              type="text"
-              placeholder="Search by name..."
-              onChange={e => handleSearchByName(e)}
-            />
-          </div>
-          <select
-            className="select-control"
-            onChange={e => handleFilterByPlanet(e)}
-          >
-            <option value="">Planets</option>
-            {planets.map((planet, index) => (
-              <option
-                key={planet.created}
-                value={planet.url.replace(/[^0-9\\]+/g, '')}
-              >
-                {planet.name}
-              </option>
-            ))}
-          </select>
-          <select
-            className="select-control"
-            onChange={e => handleFilterBySpecie(e)}
-          >
-            <option value="">Specie</option>
-            {species.map((specie, index) => (
-              <option
-                key={specie.created}
-                value={specie.url.replace(/[^0-9\\]+/g, '')}
-              >
-                {specie.name}
-              </option>
-            ))}
-          </select>
-          <select
-            className="select-control"
-            onChange={e => handleFilterByFilm(e)}
-          >
-            <option value="">Film</option>
-            {films.map((film, index) => (
-              <option
-                key={film.created}
-                value={film.url.replace(/[^0-9\\]+/g, '')}
-              >
-                {film.title}
-              </option>
-            ))}
-          </select>
-        </Search>
-      </Header>
-      <Card className="card m-auto w-full relative">
-        <Loading loading={loading} />
-        <CharacterList className="table table-auto table-row-bordered text-center table-hover table-stripped">
-          <thead>
-            <tr>
-              <th className="px-4 py-2">#</th>
-              <th className="px-4 py-2 w-2/3">Name</th>
-              <th className="px-4 py-2">Height</th>
-              <th className="px-4 py-2">Mass</th>
-              <th className="px-4 py-2">Hair color</th>
-              <th className="px-4 py-2">Skin color</th>
-              <th className="px-4 py-2">Eye color</th>
-              <th className="px-4 py-2">Gender</th>
-              <th className="px-4 py-2">Birth year</th>
-              <th className="px-4 py-2">Total Films</th>
-              <th className="px-4 py-2">Total Starships</th>
-              <th className="px-4 py-2">Total veicles</th>
-              <th className="px-4 py-2">Created</th>
-              <th className="px-4 py-2">Edited</th>
-              <th className="px-4 py-2 w-16" />
-            </tr>
-          </thead>
-          <tbody>
-            {characters
-              .filter(item => item !== false)
-              .map((character, index) => (
-                <tr key={index}>
-                  <td>{index + 1 + (page - 1) * 10}</td>
-                  <td>{character.name}</td>
-                  <td>{character.height}</td>
-                  <td>{character.mass}</td>
-                  <td>{character.hair_color}</td>
-                  <td>{character.skin_color}</td>
-                  <td>{character.eye_color}</td>
-                  <td>{character.gender}</td>
-                  <td>{character.birth_year}</td>
-                  <td className="leading-3">
-                    <small className="badge badge-primary">
-                      {character.films.length}
-                    </small>
-                  </td>
-                  <td className="leading-3">
-                    <small className="badge badge-primary">
-                      {character.vehicles.length}
-                    </small>
-                  </td>
-                  <td className="leading-3">
-                    <small className="badge badge-primary">
-                      {character.starships.length}
-                    </small>
-                  </td>
-                  <td>{character.createdFormatted}</td>
-                  <td>{character.editedFormatted}</td>
 
-                  <td className="pl-4 py-1 text-right">
-                    <Link
-                      className="btn btn-sm btn-primary justify-end"
-                      to={`/character/${index + 1}`}
-                    >
-                      <MdSearch color="#fff" size="20" />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </CharacterList>
-      </Card>
-      <Paginate className="paginate">
-        <ul>
-          <li>
-            <button
-              type="button"
-              onClick={() => goToPage(page > 1 ? page - 1 : page)}
-            >
-              Previous
-            </button>
-          </li>
-          <li className="active">{page}</li>
-          <li>
-            <button
-              type="button"
-              onClick={() =>
-                goToPage(page < countCharacters / 10 ? page + 1 : page)
-              }
-            >
-              Next
-            </button>
-          </li>
-        </ul>
-      </Paginate>
-    </Container>
+            <div className="list-body">
+              {characters
+                .filter(item => item !== false)
+                .map((character, index) => (
+                  <div className="list-row flex flex-row" key={index}>
+                    <div className="list-col w-16 py-2 content-center text-center self-center border">
+                      {index + 1 + (page - 1) * 10}
+                    </div>
+                    <div className="list-col py-2 w-64 content-center text-center self-center border">
+                      {character.name}
+                    </div>
+                    <div className="list-col w-32 content-center text-center self-center border">
+                      {character.height}
+                    </div>
+                    <div className="list-col w-32 content-center text-center self-center border">
+                      {character.mass}
+                    </div>
+                    <div className="list-col w-32 content-center text-center self-center border">
+                      {character.hair_color}
+                    </div>
+                    <div className="list-col w-32 content-center text-center self-center border">
+                      {character.skin_color}
+                    </div>
+                    <div className="list-col w-32 content-center text-center self-center border">
+                      {character.eye_color}
+                    </div>
+                    <div className="list-col w-32 content-center text-center self-center border">
+                      {character.gender}
+                    </div>
+                    <div className="list-col w-32 content-center text-center self-center border">
+                      {character.birth_year}
+                    </div>
+                    <div className="list-col w-32 leading-3 content-center text-center self-center border">
+                      <small className="badge badge-primary">
+                        {character.films.length}
+                      </small>
+                    </div>
+                    <div className="list-col w-32 leading-3 content-center text-center self-center border">
+                      <small className="badge badge-primary">
+                        {character.vehicles.length}
+                      </small>
+                    </div>
+                    <div className="list-col w-32 leading-3 content-center text-center self-center border">
+                      <small className="badge badge-primary">
+                        {character.starships.length}
+                      </small>
+                    </div>
+                    <div className="list-col w-32 content-center text-center self-center border">
+                      {character.createdFormatted}
+                    </div>
+                    <div className="list-col w-32 content-center text-center self-center border">
+                      {character.editedFormatted}
+                    </div>
+
+                    <div className="list-col pl-4 py-1 text-right">
+                      <Link
+                        className="btn btn-sm btn-primary justify-end"
+                        to={`/character/${index + 1}`}
+                      >
+                        <MdSearch color="#fff" size="20" />
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </CharacterList>
+        </Card>
+        <Paginate className="paginate">
+          <ul>
+            <li>
+              <button
+                type="button"
+                onClick={() => goToPage(page > 1 ? page - 1 : page)}
+              >
+                Previous
+              </button>
+            </li>
+            <li className="active">{page}</li>
+            <li>
+              <button
+                type="button"
+                onClick={() =>
+                  goToPage(page < countCharacters / 10 ? page + 1 : page)
+                }
+              >
+                Next
+              </button>
+            </li>
+          </ul>
+        </Paginate>
+      </Container>
+    </>
   );
 }

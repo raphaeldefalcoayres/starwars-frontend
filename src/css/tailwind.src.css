@@ -92,15 +92,15 @@ h3 {
 }
 
 .paginate button {
-  @apply block text-blue-500 border-gray-200 px-3 py-2 border rounded;
+  @apply block text-blue-500 border-gray-200 px-2 py-1 border rounded;
 }
 
 .paginate .active {
-  @apply block text-white bg-blue-500 px-3 py-2;
+  @apply block text-white bg-blue-500 px-2 py-1;
 }
 
 .paginate button:hover {
-  @apply block text-white bg-blue-500 px-3 py-2;
+  @apply block text-white bg-blue-500;
 }
 
 .select-control {
