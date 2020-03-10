@@ -50,7 +50,7 @@ export default function Character({ match: { params } }) {
 
   return (
     <Container className="container h-full mx-auto py-5">
-      <Card className="card m-auto">
+      <Card className="card m-auto bg-gray-900">
         <Loading loading={loading} />
         <h1>Character {params.id}</h1>
         <ul>

@@ -11144,6 +11144,7 @@ h3 {
 }
 
 .select-control {
+  flex: 1 1 0%;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -11180,12 +11181,12 @@ h3 {
 }
 
 body {
-  background-color: #33343C;
+  background-color: #1E1F28;
   color: #fff;
 }
 
 header {
-  background-color: #33343C;
+  background-color: #1E1F28;
   color: #fff;
   width: 100%;
   padding-left: 0.5rem;
@@ -11198,7 +11199,7 @@ header {
 }
 
 .list-row {
-  background-color: #4A4B52;
+  background-color: #33343C;
 }
 
 input,

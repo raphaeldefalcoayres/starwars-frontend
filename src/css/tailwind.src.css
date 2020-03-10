@@ -104,7 +104,7 @@ h3 {
 }
 
 .select-control {
-  @apply appearance-none block bg-white border border-gray-300 px-4 py-2 pr-8 rounded shadow text-gray-600 leading-tight;
+  @apply flex-1 appearance-none block bg-white border border-gray-300 px-4 py-2 pr-8 rounded shadow text-gray-600 leading-tight;
 }
 
 .badge {
@@ -116,15 +116,15 @@ h3 {
 }
 
 body {
-  @apply bg-gray-900 text-white;
+  @apply bg-gray-1000 text-white;
 }
 
 header {
-  @apply bg-gray-900 text-white w-full px-2 py-2 flex items-center shadow-lg;
+  @apply bg-gray-1000 text-white w-full px-2 py-2 flex items-center shadow-lg;
 }
 
 .list-row {
-  @apply bg-gray-800;
+  @apply bg-gray-900;
 }
 
 input,

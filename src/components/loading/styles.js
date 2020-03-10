@@ -6,7 +6,7 @@ export const Container = styled.div`
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.5);
 
   @-webkit-keyframes spin {
     to {

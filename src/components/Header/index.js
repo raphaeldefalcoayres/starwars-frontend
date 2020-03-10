@@ -70,7 +70,7 @@ export default function Header({
             onChange={e => handleSearchByName(e)}
           />
         </div>
-        <div className="relative flex">
+        <div className="relative flex w-1/3">
           <select
             className="select-control"
             onChange={e => handleFilterByPlanet(e)}
@@ -89,7 +89,7 @@ export default function Header({
             <MdExpandMore />
           </div>
         </div>
-        <div className="relative flex">
+        <div className="relative flex w-1/3">
           <select
             className="select-control"
             onChange={e => handleFilterBySpecie(e)}
@@ -108,7 +108,7 @@ export default function Header({
             <MdExpandMore />
           </div>
         </div>
-        <div className="relative flex">
+        <div className="relative flex w-1/3">
           <select
             className="select-control"
             onChange={e => handleFilterByFilm(e)}
