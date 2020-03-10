@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MdSearch } from 'react-icons/md';
+import { MdSearch, MdExpandMore } from 'react-icons/md';
 import api from '~/services/api';
 import * as Utils from '~/utils/getItemsList';
 import { Container, Search } from './styles';
@@ -55,13 +55,8 @@ export default function Header({
   }, []);
 
   return (
-    <Container className="w-full px-2 py-2 flex items-center shadow">
-      <h1 className="text-white m-0">
-        Startwars characters
-        {/* <small>
-          page: {page} total: {countCharacters || 0}
-        </small> */}
-      </h1>
+    <Container>
+      <h1 className="text-white m-0">Startwars characters</h1>
       <Search className="w-2/3">
         <div className="input-group w-2/3">
           <div className="flex -mr-px">
@@ -75,48 +70,63 @@ export default function Header({
             onChange={e => handleSearchByName(e)}
           />
         </div>
-        <select
-          className="select-control"
-          onChange={e => handleFilterByPlanet(e)}
-        >
-          <option value="">Planets</option>
-          {planets.map((planet, index) => (
-            <option
-              key={planet.created}
-              value={planet.url.replace(/[^0-9\\]+/g, '')}
-            >
-              {planet.name}
-            </option>
-          ))}
-        </select>
-        <select
-          className="select-control"
-          onChange={e => handleFilterBySpecie(e)}
-        >
-          <option value="">Specie</option>
-          {species.map((specie, index) => (
-            <option
-              key={specie.created}
-              value={specie.url.replace(/[^0-9\\]+/g, '')}
-            >
-              {specie.name}
-            </option>
-          ))}
-        </select>
-        <select
-          className="select-control"
-          onChange={e => handleFilterByFilm(e)}
-        >
-          <option value="">Film</option>
-          {films.map((film, index) => (
-            <option
-              key={film.created}
-              value={film.url.replace(/[^0-9\\]+/g, '')}
-            >
-              {film.title}
-            </option>
-          ))}
-        </select>
+        <div className="relative flex">
+          <select
+            className="select-control"
+            onChange={e => handleFilterByPlanet(e)}
+          >
+            <option value="">Planets</option>
+            {planets.map((planet, index) => (
+              <option
+                key={planet.created}
+                value={planet.url.replace(/[^0-9\\]+/g, '')}
+              >
+                {planet.name}
+              </option>
+            ))}
+          </select>
+          <div className="select-chevron">
+            <MdExpandMore />
+          </div>
+        </div>
+        <div className="relative flex">
+          <select
+            className="select-control"
+            onChange={e => handleFilterBySpecie(e)}
+          >
+            <option value="">Specie</option>
+            {species.map((specie, index) => (
+              <option
+                key={specie.created}
+                value={specie.url.replace(/[^0-9\\]+/g, '')}
+              >
+                {specie.name}
+              </option>
+            ))}
+          </select>
+          <div className="select-chevron">
+            <MdExpandMore />
+          </div>
+        </div>
+        <div className="relative flex">
+          <select
+            className="select-control"
+            onChange={e => handleFilterByFilm(e)}
+          >
+            <option value="">Film</option>
+            {films.map((film, index) => (
+              <option
+                key={film.created}
+                value={film.url.replace(/[^0-9\\]+/g, '')}
+              >
+                {film.title}
+              </option>
+            ))}
+          </select>
+          <div className="select-chevron">
+            <MdExpandMore />
+          </div>
+        </div>
       </Search>
     </Container>
   );

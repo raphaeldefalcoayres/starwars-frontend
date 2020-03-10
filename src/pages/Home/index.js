@@ -201,147 +201,151 @@ export default function Home() {
         handleFilterByFilm={handleFilterByFilm}
       />
       <Container className="px-3 h-full py-3">
-        <Card className="card m-auto w-full relative">
-          <Loading loading={loading} />
-          <CharacterList className="w-full">
-            <div className="list-head flex flex-row">
-              <div className="py-2 w-16 content-center text-center self-center border">
-                #
-              </div>
-              <div className="py-2 w-64 content-center text-center self-center border">
-                name
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Height
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Mass
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Hair color
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Skin color
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Eye color
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Gender
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Birth year
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Total Films
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Total Starships
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Total veicles
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Created
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Edited
-              </div>
-              <div className="py-2 w-32 content-center text-center self-center border">
-                Actions
-              </div>
+        <Loading loading={loading} />
+        <CharacterList className="w-full">
+          <div className="list-head flex flex-row">
+            <div className="py-2 w-1/12 content-center text-center self-center" />
+            <div className="py-2 w-2/5 content-center text-center self-center">
+              Name
             </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Height
+            </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Mass
+            </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Hair color
+            </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Skin color
+            </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Eye color
+            </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Gender
+            </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Birth year
+            </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Total Films
+            </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Total Starships
+            </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Total veicles
+            </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Created
+            </div>
+            <div className="py-2 w-1/6 content-center text-center self-center">
+              Edited
+            </div>
+            <div className="py-2 w-1/12 content-center text-center self-center" />
+          </div>
 
-            <div className="list-body">
-              {characters
-                .filter(item => item !== false)
-                .map((character, index) => (
-                  <div className="list-row flex flex-row" key={index}>
-                    <div className="list-col w-16 py-2 content-center text-center self-center border">
-                      {index + 1 + (page - 1) * 10}
-                    </div>
-                    <div className="list-col py-2 w-64 content-center text-center self-center border">
-                      {character.name}
-                    </div>
-                    <div className="list-col w-32 content-center text-center self-center border">
-                      {character.height}
-                    </div>
-                    <div className="list-col w-32 content-center text-center self-center border">
-                      {character.mass}
-                    </div>
-                    <div className="list-col w-32 content-center text-center self-center border">
-                      {character.hair_color}
-                    </div>
-                    <div className="list-col w-32 content-center text-center self-center border">
-                      {character.skin_color}
-                    </div>
-                    <div className="list-col w-32 content-center text-center self-center border">
-                      {character.eye_color}
-                    </div>
-                    <div className="list-col w-32 content-center text-center self-center border">
-                      {character.gender}
-                    </div>
-                    <div className="list-col w-32 content-center text-center self-center border">
-                      {character.birth_year}
-                    </div>
-                    <div className="list-col w-32 leading-3 content-center text-center self-center border">
-                      <small className="badge badge-primary">
-                        {character.films.length}
-                      </small>
-                    </div>
-                    <div className="list-col w-32 leading-3 content-center text-center self-center border">
-                      <small className="badge badge-primary">
-                        {character.vehicles.length}
-                      </small>
-                    </div>
-                    <div className="list-col w-32 leading-3 content-center text-center self-center border">
-                      <small className="badge badge-primary">
-                        {character.starships.length}
-                      </small>
-                    </div>
-                    <div className="list-col w-32 content-center text-center self-center border">
-                      {character.createdFormatted}
-                    </div>
-                    <div className="list-col w-32 content-center text-center self-center border">
-                      {character.editedFormatted}
-                    </div>
-
-                    <div className="list-col pl-4 py-1 text-right">
-                      <Link
-                        className="btn btn-sm btn-primary justify-end"
-                        to={`/character/${index + 1}`}
-                      >
-                        <MdSearch color="#fff" size="20" />
-                      </Link>
-                    </div>
+          <div className="list-body">
+            {characters
+              .filter(item => item !== false)
+              .map((character, index) => (
+                <div
+                  className="list-row flex flex-row rounded my-2 py-1/2"
+                  key={index}
+                >
+                  <div className="list-col w-1/12 py-2 content-center text-center self-center">
+                    {index + 1 + (page - 1) * 10}
                   </div>
-                ))}
-            </div>
-          </CharacterList>
-        </Card>
-        <Paginate className="paginate">
-          <ul>
-            <li>
-              <button
-                type="button"
-                onClick={() => goToPage(page > 1 ? page - 1 : page)}
-              >
-                Previous
-              </button>
-            </li>
-            <li className="active">{page}</li>
-            <li>
-              <button
-                type="button"
-                onClick={() =>
-                  goToPage(page < countCharacters / 10 ? page + 1 : page)
-                }
-              >
-                Next
-              </button>
-            </li>
-          </ul>
-        </Paginate>
+                  <div className="list-col py-2 w-2/5 content-center text-center self-center">
+                    {character.name}
+                  </div>
+                  <div className="list-col w-1/6 content-center text-center self-center">
+                    {character.height}
+                  </div>
+                  <div className="list-col w-1/6 content-center text-center self-center">
+                    {character.mass}
+                  </div>
+                  <div className="list-col w-1/6 content-center text-center self-center">
+                    {character.hair_color}
+                  </div>
+                  <div className="list-col w-1/6 content-center text-center self-center">
+                    {character.skin_color}
+                  </div>
+                  <div className="list-col w-1/6 content-center text-center self-center">
+                    {character.eye_color}
+                  </div>
+                  <div className="list-col w-1/6 content-center text-center self-center">
+                    {character.gender}
+                  </div>
+                  <div className="list-col w-1/6 content-center text-center self-center">
+                    {character.birth_year}
+                  </div>
+                  <div className="list-col w-1/6 leading-3 content-center text-center self-center">
+                    <small className="badge badge-primary">
+                      {character.films.length}
+                    </small>
+                  </div>
+                  <div className="list-col w-1/6 leading-3 content-center text-center self-center">
+                    <small className="badge badge-primary">
+                      {character.vehicles.length}
+                    </small>
+                  </div>
+                  <div className="list-col w-1/6 leading-3 content-center text-center self-center">
+                    <small className="badge badge-primary">
+                      {character.starships.length}
+                    </small>
+                  </div>
+                  <div className="list-col w-1/6 content-center text-center self-center">
+                    {character.createdFormatted}
+                  </div>
+                  <div className="list-col w-1/6 content-center text-center self-center">
+                    {character.editedFormatted}
+                  </div>
+
+                  <div className="list-col w-1/12 pl-4 py-1 text-right">
+                    <Link
+                      className="btn btn-sm btn-primary justify-end mr-2"
+                      to={`/character/${index + 1}`}
+                    >
+                      <MdSearch color="#fff" size="20" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </CharacterList>
+
+        <div className="flex justify-between items-center">
+          <small>
+            page: {page} show: 10 total: {countCharacters || 0}
+          </small>
+
+          <Paginate className="paginate">
+            <ul>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => goToPage(page > 1 ? page - 1 : page)}
+                >
+                  Previous
+                </button>
+              </li>
+              <li className="active">{page}</li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() =>
+                    goToPage(page < countCharacters / 10 ? page + 1 : page)
+                  }
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </Paginate>
+        </div>
       </Container>
     </>
   );
