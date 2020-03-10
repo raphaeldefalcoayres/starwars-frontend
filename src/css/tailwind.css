@@ -11198,10 +11198,6 @@ header {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.list-row {
-  background-color: #33343C;
-}
-
 input,
 select,
 textarea {
@@ -11237,6 +11233,54 @@ input::placeholder {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   color: #606167;
+}
+
+/* FLEX LIST */
+
+.list-row {
+  background-color: #33343C;
+  display: flex;
+  flex-direction: row;
+  border-radius: 0.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
+.list-head {
+  display: flex;
+  flex-direction: row;
+}
+
+.list-col {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  align-content: center;
+  text-align: center;
+  align-self: center;
+}
+
+@media screen and (max-width: 996px) {
+  header {
+    flex-direction: column;
+  }
+
+  .search {
+    display: none !important;
+  }
+
+  .list-head {
+    display: none;
+  }
+
+  .list-row {
+    flex-wrap: wrap;
+  }
+
+  .list-col {
+    flex: 1 1 auto;
+  }
 }
 
 @media (min-width: 640px) {

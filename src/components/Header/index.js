@@ -56,9 +56,9 @@ export default function Header({
 
   return (
     <Container>
-      <h1 className="text-white m-0">Startwars characters</h1>
-      <Search className="w-2/3">
-        <div className="input-group w-2/3">
+      <h1 className="text-white m-0 sm:w-100">Startwars characters</h1>
+      <Search className="md:w-2/3 search">
+        <div className="input-group md:w-2/3">
           <div className="flex -mr-px">
             <span className="input-group-icon">
               <MdSearch />
@@ -70,7 +70,7 @@ export default function Header({
             onChange={e => handleSearchByName(e)}
           />
         </div>
-        <div className="relative flex w-1/3">
+        <div className="relative flex md:w-1/3">
           <select
             className="select-control"
             onChange={e => handleFilterByPlanet(e)}
@@ -89,7 +89,7 @@ export default function Header({
             <MdExpandMore />
           </div>
         </div>
-        <div className="relative flex w-1/3">
+        <div className="relative flex md:w-1/3">
           <select
             className="select-control"
             onChange={e => handleFilterBySpecie(e)}
@@ -108,7 +108,7 @@ export default function Header({
             <MdExpandMore />
           </div>
         </div>
-        <div className="relative flex w-1/3">
+        <div className="relative flex md:w-1/3">
           <select
             className="select-control"
             onChange={e => handleFilterByFilm(e)}

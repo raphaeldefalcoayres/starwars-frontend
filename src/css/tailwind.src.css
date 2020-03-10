@@ -123,10 +123,6 @@ header {
   @apply bg-gray-1000 text-white w-full px-2 py-2 flex items-center shadow-lg;
 }
 
-.list-row {
-  @apply bg-gray-900;
-}
-
 input,
 select,
 textarea {
@@ -153,4 +149,39 @@ input::placeholder {
 
 .select-chevron {
   @apply pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700;
+}
+
+/* FLEX LIST */
+.list-row {
+  @apply bg-gray-900 flex flex-row rounded my-2 py-1/2;
+}
+
+.list-head {
+  @apply flex flex-row;
+}
+
+.list-col {
+  @apply py-2 content-center text-center self-center;
+}
+
+@media screen and (max-width: 996px) {
+  header {
+    flex-direction: column;
+  }
+
+  .search {
+    display: none !important;
+  }
+
+  .list-head {
+    display: none;
+  }
+
+  .list-row {
+    flex-wrap: wrap;
+  }
+
+  .list-col {
+    flex: 1 1 auto;
+  }
 }

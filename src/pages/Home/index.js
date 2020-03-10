@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { MdSearch } from 'react-icons/md';
 import { format, parseISO } from 'date-fns';
-import { Link } from 'react-router-dom';
 import pt from 'date-fns/locale/pt';
+import { MdSearch } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 import api from '~/services/api';
 import * as Utils from '~/utils/getItemsList';
 import Loading from '~/components/loading';
 
-import { Container, CharacterList, Card, Paginate } from './styles';
+import { Container, Paginate } from './styles';
 import Header from '~/components/Header';
+import FlexList from '~/components/FlexList';
+import Badge from '~/components/Badge';
 
 export default function Home() {
   const [characters, setCharacters] = useState([]);
@@ -51,7 +53,7 @@ export default function Home() {
     setCountCharacters(response.data.count);
 
     const data = await Promise.all(
-      response.data.results.map(async character => {
+      response.data.results.map(async (character, index) => {
         let planet_id = '';
         let specie_ids = [];
 
@@ -87,6 +89,7 @@ export default function Home() {
         );
         return {
           ...character,
+          index: index + 1,
           createdFormatted,
           editedFormatted,
           planet_id,
@@ -103,7 +106,7 @@ export default function Home() {
   }
 
   function mountCharacters() {
-    const data = charactersPagination[page - 1].map(character => {
+    const data = charactersPagination[page - 1].map((character, index) => {
       let planet_id = '';
       let specie_ids = [];
 
@@ -135,15 +138,28 @@ export default function Home() {
       });
       return {
         ...character,
+        index: index + 1 + (page - 1) * 10,
         createdFormatted,
         editedFormatted,
         planet_id,
         specie_ids,
+        total_veicles: <Badge>{character.vehicles.length}</Badge>,
+        total_starships: <Badge>{character.starships.length}</Badge>,
+        total_films: <Badge>{character.films.length}</Badge>,
+        actions: (
+          <Link
+            className="btn btn-sm btn-primary justify-end mr-2"
+            to={`/character/${index + 1}`}
+          >
+            <MdSearch color="#fff" size="20" />
+          </Link>
+        ),
       };
     });
 
     setLoading(false);
     setCharacters(data);
+    console.log(data);
   }
 
   useEffect(() => {
@@ -192,6 +208,84 @@ export default function Home() {
     setCharacterFilm(e.target.value);
   }
 
+  const flexListCols = [
+    {
+      label: '',
+      name: 'index',
+      class: 'md:w-1/12',
+    },
+    {
+      label: 'Nome',
+      name: 'name',
+      class: 'md:w-2/5',
+    },
+    {
+      label: 'Altura',
+      name: 'height',
+      class: 'md:w-1/6',
+    },
+    {
+      label: 'Massa',
+      name: 'mass',
+      class: 'md:w-1/6',
+    },
+    {
+      label: 'Cor do cabelo',
+      name: 'hair_color',
+      class: 'md:w-1/6',
+    },
+    {
+      label: 'Cor da pele',
+      name: 'skin_color',
+      class: 'md:w-1/6',
+    },
+    {
+      label: 'Cor dos olhos',
+      name: 'eye_color',
+      class: 'md:w-1/6',
+    },
+    {
+      label: 'Gênero',
+      name: 'gender',
+      class: 'md:w-1/6',
+    },
+    {
+      label: 'Ano',
+      name: 'birth_year',
+      class: 'md:w-1/6',
+    },
+    {
+      label: 'Total Filmes',
+      name: 'total_films',
+      class: 'md:w-1/6',
+    },
+    {
+      label: 'Total Naves',
+      name: 'total_starships',
+      class: 'md:w-1/6',
+    },
+    {
+      label: 'Total Veículos',
+      name: 'total_veicles',
+      class: 'md:w-1/6',
+    },
+    {
+      label: 'Criado em',
+      name: 'createdFormatted',
+      class: 'md:w-1/6',
+    },
+    {
+      label: 'Editado em',
+      name: 'editedFormatted',
+      class: 'md:w-1/6',
+    },
+    {
+      label: '',
+      name: 'actions',
+      class: 'md:w-1/12',
+    },
+  ];
+
   return (
     <>
       <Header
@@ -202,120 +296,12 @@ export default function Home() {
       />
       <Container className="px-3 h-full py-3">
         <Loading loading={loading} />
-        <CharacterList className="w-full">
-          <div className="list-head flex flex-row">
-            <div className="py-2 w-1/12 content-center text-center self-center" />
-            <div className="py-2 w-2/5 content-center text-center self-center">
-              Name
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Height
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Mass
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Hair color
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Skin color
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Eye color
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Gender
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Birth year
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Total Films
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Total Starships
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Total veicles
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Created
-            </div>
-            <div className="py-2 w-1/6 content-center text-center self-center">
-              Edited
-            </div>
-            <div className="py-2 w-1/12 content-center text-center self-center" />
-          </div>
 
-          <div className="list-body">
-            {characters
-              .filter(item => item !== false)
-              .map((character, index) => (
-                <div
-                  className="list-row flex flex-row rounded my-2 py-1/2"
-                  key={index}
-                >
-                  <div className="list-col w-1/12 py-2 content-center text-center self-center">
-                    {index + 1 + (page - 1) * 10}
-                  </div>
-                  <div className="list-col py-2 w-2/5 content-center text-center self-center">
-                    {character.name}
-                  </div>
-                  <div className="list-col w-1/6 content-center text-center self-center">
-                    {character.height}
-                  </div>
-                  <div className="list-col w-1/6 content-center text-center self-center">
-                    {character.mass}
-                  </div>
-                  <div className="list-col w-1/6 content-center text-center self-center">
-                    {character.hair_color}
-                  </div>
-                  <div className="list-col w-1/6 content-center text-center self-center">
-                    {character.skin_color}
-                  </div>
-                  <div className="list-col w-1/6 content-center text-center self-center">
-                    {character.eye_color}
-                  </div>
-                  <div className="list-col w-1/6 content-center text-center self-center">
-                    {character.gender}
-                  </div>
-                  <div className="list-col w-1/6 content-center text-center self-center">
-                    {character.birth_year}
-                  </div>
-                  <div className="list-col w-1/6 leading-3 content-center text-center self-center">
-                    <small className="badge badge-primary">
-                      {character.films.length}
-                    </small>
-                  </div>
-                  <div className="list-col w-1/6 leading-3 content-center text-center self-center">
-                    <small className="badge badge-primary">
-                      {character.vehicles.length}
-                    </small>
-                  </div>
-                  <div className="list-col w-1/6 leading-3 content-center text-center self-center">
-                    <small className="badge badge-primary">
-                      {character.starships.length}
-                    </small>
-                  </div>
-                  <div className="list-col w-1/6 content-center text-center self-center">
-                    {character.createdFormatted}
-                  </div>
-                  <div className="list-col w-1/6 content-center text-center self-center">
-                    {character.editedFormatted}
-                  </div>
-
-                  <div className="list-col w-1/12 pl-4 py-1 text-right">
-                    <Link
-                      className="btn btn-sm btn-primary justify-end mr-2"
-                      to={`/character/${index + 1}`}
-                    >
-                      <MdSearch color="#fff" size="20" />
-                    </Link>
-                  </div>
-                </div>
-              ))}
-          </div>
-        </CharacterList>
+        <FlexList
+          flexListCols={flexListCols}
+          characters={characters}
+          page={page}
+        />
 
         <div className="flex justify-between items-center">
           <small>
