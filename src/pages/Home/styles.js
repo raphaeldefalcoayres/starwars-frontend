@@ -9,6 +9,6 @@ export const Card = styled.div`
 export const Paginate = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 10px;
+  margin-top: 5px;
   align-self: end;
 `;
